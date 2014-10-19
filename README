@@ -1,0 +1,51 @@
+NAME
+    Generic::Assertions - A Generic Assertion checking class
+
+VERSION
+    version 0.001000
+
+SYNOPSIS
+      use Generic::Assertions;
+      use Path::Tiny qw(path);
+
+      my $assert = Generic::Assertions->new( 
+        exist => sub {
+          return (1, "Path $_[0] exists") if path($_[0])->exists;
+          return (0, "Path $_[0] does not exist");
+        },
+      );
+
+      ...
+
+      sub foo {
+        my ( $path ) = @_;
+
+        # carp unless $path exists with "Path $path does not exist"
+        $assert->should( exist => $path );
+
+        # carp if $path exists with "Path $path exists"
+        $assert->should_not( exist => $path );
+
+        # croak unless $path exists with "Path $path does not exist"
+        $assert->must( exist => $path );
+
+        # Lower level way to use the assertion simply to return truth value
+        # without side effects.
+        if ( $assert->test( exist => $path ) ) {
+
+        }
+
+        # carp unconditionally showing the test result and its message 
+        $assert->log( exist => $path );
+      }
+
+AUTHOR
+    Kent Fredric <kentnl@cpan.org>
+
+COPYRIGHT AND LICENSE
+    This software is copyright (c) 2014 by Kent Fredric
+    <kentfredric@gmail.com>.
+
+    This is free software; you can redistribute it and/or modify it under
+    the same terms as the Perl 5 programming language system itself.
+
