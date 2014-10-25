@@ -12,7 +12,7 @@ use Test::Fatal qw( exception );
 use Generic::Assertions;
 my $tb = Test::Builder->new();
 
-sub eok($$) {
+sub noe_ok($$) {
   if ( not defined $_[0] ) {
     return $tb->ok( 1, $_[1] );
   }
@@ -33,21 +33,13 @@ sub eok_like($$$) {
   return $tb->ok( 1, $_[2] );
 }
 
-eok( exception { my $ass = Generic::Assertions->new() }, 'No args => no problem' );
-
-eok_like( exception { my $ass = Generic::Assertions->new('foo') }, qr/even/, 'Odd args bad' );
-
-eok_like( exception { my $ass = Generic::Assertions->new( x => 'y' ) }, qr/must be a CodeRef/, 'two args badder' );
-
-eok(
+noe_ok(
   exception {
     my $ass = Generic::Assertions->new( x => sub { } );
     $ass->_test('x');
   },
   'two args but sub is good'
 );
-
-eok_like( exception { my $ass = Generic::Assertions->new( 'foo', 'foo', 'foo' ) }, qr/even/, 'Three args bad' );
 
 eok_like(
   exception { my $ass = Generic::Assertions->new( '-tests' => { x => 'y' } ) },
@@ -60,7 +52,7 @@ eok_like(
   qr/must be a CodeRef/,
   'strings instead of coderefs in hashes are also bad, even when constructed via hashes'
 );
-eok(
+noe_ok(
   exception {
     my $ass = Generic::Assertions->new(
       {
@@ -71,7 +63,7 @@ eok(
   },
   'sub is good in a top level test set'
 );
-eok(
+noe_ok(
   exception {
     my $ass = Generic::Assertions->new(
       -tests => {
@@ -82,7 +74,7 @@ eok(
   },
   'sub is good in a hash test set'
 );
-eok(
+noe_ok(
   exception {
     my $ass = Generic::Assertions->new(
       {
@@ -95,6 +87,5 @@ eok(
   },
   'sub is good in a hash test set when constructed as hashes'
 );
-
 done_testing;
 

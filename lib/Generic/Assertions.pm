@@ -30,7 +30,7 @@ sub new {
 }
 
 sub BUILD {
-  my ( $self ) = @_;
+  my ($self) = @_;
   my $tests = $self->_tests;
   for my $test ( keys %{$tests} ) {
     croak 'test ' . $test . ' must be a CodeRef' if not 'CODE' eq ref $tests->{$test};
@@ -41,20 +41,27 @@ sub BUILD {
   }
   return;
 }
+
+sub _args {
+  my ($self) = @_;
+  return $self->{args} if exists $self->{args};
+  return ( $self->{args} = {} );
+}
+
 sub _tests {
   my ( $self, ) = @_;
   return $self->{tests} if exists $self->{tests};
   my %tests;
-  for my $key ( grep { !/^-/ } keys %{ $self->{args} } ) {
-    $tests{$key} = $self->{args}->{$key};
+  for my $key ( grep { !/^-/ } keys %{ $self->_args } ) {
+    $tests{$key} = $self->_args->{$key};
   }
-  return ( $self->{tests} = { %tests, %{ $self->{args}->{'-tests'} || {} } } );
+  return ( $self->{tests} = { %tests, %{ $self->_args->{'-tests'} || {} } } );
 }
 
 sub _handlers {
   my ( $self, ) = @_;
   return $self->{handlers} if exists $self->{handlers};
-  return ( $self->{handlers} = { %{$self->_handler_defaults}, %{ $self->{args}->{'-handlers'} || {} } } );
+  return ( $self->{handlers} = { %{ $self->_handler_defaults }, %{ $self->_args->{'-handlers'} || {} } } );
 }
 
 sub _handler_defaults {
