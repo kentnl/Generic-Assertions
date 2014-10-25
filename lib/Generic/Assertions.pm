@@ -43,6 +43,7 @@ sub BUILD {
   for my $handler ( keys %{$handlers} ) {
     croak 'handler ' . $handler . ' must be a CodeRef' if not 'CODE' eq ref $handlers->{$handler};
   }
+  croak 'input_transformer must be a CodeRef' if not 'CODE' eq ref $self->_input_transformer;
   return;
 }
 
@@ -102,8 +103,26 @@ sub _handler_defaults {
   };
 }
 
+sub _transform_input {
+  my ( $self, $name, @slurpy ) = @_;
+  return $self->_input_transformer->( $name, @slurpy );
+}
+
+sub _input_transformer {
+  my ( $self, ) = @_;
+  return $self->{input_transformer} if exists $self->{input_transformer};
+  if ( exists $self->_args->{'-input_transformer'} ) {
+    return ( $self->{input_transformer} = $self->_args->{'-input_transformer'} );
+  }
+  return ( $self->{input_transformer} = $self->_input_transformer_default );
+}
+
+sub _input_transformer_default {
+  return sub { shift; return @_ };
+}
+
 # Dispatch the result of test name $test_name
-sub _handle { ## no critic (Subroutines::ProhibitManyArgs)
+sub _handle {    ## no critic (Subroutines::ProhibitManyArgs)
   my ( $self, $handler_name, $status_code, $message, $test_name, @slurpy ) = @_;
   return $self->_handlers->{$handler_name}->( $status_code, $message, $test_name, @slurpy );
 }
@@ -123,8 +142,9 @@ sub _test {
 # ->should( exist => path('./foo'))
 sub _assert {
   my ( $self, $handler_name, $test_name, @slurpy ) = @_;
-  my ( $status, $message ) = $self->_test( $test_name, @slurpy );
-  return $self->_handle( $handler_name, $status, $message, $test_name, @slurpy );
+  my (@input) = $self->_transform_input( $test_name, @slurpy );
+  my ( $status, $message ) = $self->_test( $test_name, @input );
+  return $self->_handle( $handler_name, $status, $message, $test_name, @input );
 }
 
 for my $handler (qw( should must should_not must_not test log )) {

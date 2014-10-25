@@ -28,6 +28,7 @@ t/construction_handlers.t
 t/construction_tests.t
 t/core_handlers.t
 t/core_handlers_methods.t
+t/input_transformer.t
 weaver.ini
 xt/author/critic.t
 xt/release/cpan-changes.t
