@@ -113,14 +113,14 @@ METHODS
 
     For instance, the "test" handler is simply:
 
-      sub { 
+      sub {
         my ( $status ) = @_;
         return $status;
       }
 
     And you could perhaps change that to
 
-      sub { 
+      sub {
         my ( $status, $message ) = @_;
         return $message;
       }

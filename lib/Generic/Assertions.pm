@@ -237,7 +237,7 @@ Note the test itself can only see the arguments passed directly to it at the cal
 Each of the various assertion types have a handler underlying them, which can be overridden
 during construction.
 
-  ->new( -handlers => { should => sub { ... } } ); 
+  ->new( -handlers => { should => sub { ... } } );
 
 This for instance will override the default handler for "should" and will be invoked
 somewhere after the result from
@@ -270,19 +270,19 @@ Its worth noting that handlers dictate in entirety:
 
 For instance, the C<test> handler is simply:
 
-  sub { 
+  sub {
     my ( $status ) = @_;
     return $status;
   }
 
-And you could perhaps change that to 
+And you could perhaps change that to
 
-  sub { 
+  sub {
     my ( $status, $message ) = @_;
     return $message;
   }
 
-And then invoking 
+And then invoking
 
   ->test( foo => @args );
 
