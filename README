@@ -45,7 +45,7 @@ METHODS
 
       my $assertion = Generic::Assertions->new( ARGS );
 
-    The following forms of "ARGS" is supporteed:
+    The following forms of "ARGS" is supported:
 
       ->new(   key => value    );
       ->new({  key => value   });

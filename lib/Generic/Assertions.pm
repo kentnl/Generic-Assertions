@@ -199,7 +199,7 @@ Constructs a Generic::Assertions object.
 
   my $assertion = Generic::Assertions->new( ARGS );
 
-The following forms of C<ARGS> is supporteed:
+The following forms of C<ARGS> is supported:
 
   ->new(   key => value    );
   ->new({  key => value   });
