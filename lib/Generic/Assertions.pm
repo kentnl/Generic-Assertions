@@ -326,7 +326,7 @@ it available as a native method:
 
 =head3 C<-input_transformer>
 
-You can specify a coderef through which all tests get passed as a primary step.
+You can specify a CodeRef through which all tests get passed as a primary step.
 
   ->new(
     -input_transformer => sub {
