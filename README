@@ -1,0 +1,247 @@
+NAME
+    Generic::Assertions - A Generic Assertion checking class
+
+VERSION
+    version 0.001000
+
+ALPHA
+    This is pre-release code, and as such "API" is very much subject to
+    change.
+
+    Best attempts at being consolidated is already made, but there's no
+    guarantees at this time things won't change and break "API" without
+    warning.
+
+SYNOPSIS
+      use Generic::Assertions;
+      use Path::Tiny qw(path);
+
+      my $assert = Generic::Assertions->new(
+        exist => sub {
+          return (1, "Path $_[0] exists") if path($_[0])->exists;
+          return (0, "Path $_[0] does not exist");
+        },
+      );
+
+      ...
+
+      sub foo {
+        my ( $path ) = @_;
+
+        # carp unless $path exists with "Path $path does not exist"
+        $assert->should( exist => $path );
+
+        # carp if $path exists with "Path $path exists"
+        $assert->should_not( exist => $path );
+
+        # croak unless $path exists with "Path $path does not exist"
+        $assert->must( exist => $path );
+
+        # Lower level way to use the assertion simply to return truth value
+        # without side effects.
+        if ( $assert->test( exist => $path ) ) {
+
+        }
+
+        # carp unconditionally showing the test result and its message
+        $assert->log( exist => $path );
+      }
+
+METHODS
+  "new"
+    Constructs a Generic::Assertions object.
+
+      my $assertion = Generic::Assertions->new( ARGS );
+
+    The following forms of "ARGS" is supported:
+
+      ->new(   key => value    );
+      ->new({  key => value   });
+
+    All "keys" without a "-" prefix are assumed to be test names, and are
+    equivalent to:
+
+      ->new( -tests => { key => value } );
+
+   "-tests"
+    All tests must have a simple string key, and a "CodeRef" value.
+
+    An example test looks like:
+
+       sub {
+          my ( @slurpy ) = @_;
+          if ( -e $slurpy[0] ) {
+            return ( 1, "$slurpy[0] exists" );
+          }
+          return ( 0, "$slurpy[1] does not exist" );
+       }
+
+    That is, each test must return either a "true" value or a "false" value.
+    And each test must return a string describing the condition.
+
+    This is so it composes nicely:
+
+      $ass->should( exist => $foo ); # warns "$foo does not exist" if it doesn't
+      $ass->should_not( exist => $foo ); # warns "$foo exists" if it does.
+
+    Note the test itself can only see the arguments passed directly to it at
+    the calling point.
+
+   "-handlers"
+    Each of the various assertion types have a handler underlying them,
+    which can be overridden during construction.
+
+      ->new( -handlers => { should => sub { ... } } );
+
+    This for instance will override the default handler for "should" and
+    will be invoked somewhere after the result from
+
+      $assertion->should(  )
+
+    Is obtained.
+
+    An example handler approximating the default "should" handler.
+
+      sub {
+        my ( $status, $message, $name, @slurpy ) = @_;
+        # $status is the 0/1 returned by the test.
+        # $message is the message the test gave.
+        # $name is the name of the test invoked ( ie: ->should( foo => ... )
+        # @slurpy is the arguments passed from the user to the test.
+        carp $message if $status;
+        return $slurpy[0];
+      }
+
+    Its worth noting that handlers dictate in entirety:
+
+    *   What calls will be invoked in response to the fail/pass returned by
+        the test
+
+    *   What will be returned to the caller who invoked the test
+
+    For instance, the "test" handler is simply:
+
+      sub {
+        my ( $status ) = @_;
+        return $status;
+      }
+
+    And you could perhaps change that to
+
+      sub {
+        my ( $status, $message ) = @_;
+        return $message;
+      }
+
+    And then invoking
+
+      ->test( foo => @args );
+
+    Would return "foo"'s message instead of its return value.
+
+    Use this power with care.
+
+   Custom Handlers
+    You can of course define custom handlers outside the core functionality,
+    except of course they won't be accessible as convenient methods.
+
+    You can perhaps invoke them via
+
+      ->_assert( $handler_name, $test_name, @slurpy_args )
+
+    But it would be probably nicer for you to sub-class
+    "Generic::Assertions" and make it available as a native method:
+
+      ->$handler_name( $test_name, @slurpy_args )
+
+   "-input_transformer"
+    You can specify a "CodeRef" through which all tests get passed as a
+    primary step.
+
+      ->new(
+        -input_transformer => sub {
+          # Gets both the name, and all the tests arguments
+          my ( $name, $path )  = @_;
+          # Returns a substitute argument list
+          return path( $path );
+        },
+        exist => sub {
+          return ( 0, "$_[0] does not exist" ) unless $_[0]->exists;
+          return ( 1, "$_[1] exists" );
+        },
+      );
+
+      ...
+      # The following code will now check that foo.pm exist
+      # and if it exists, return a path() object for it as $rval.
+      # If foo.pm does not exist, it will warn.
+      #
+      # $rval will be a path object in both cases.
+      my $rval = $ass->should( exist => "./foo.pm" );
+
+      # Under default configuration, this is basically the same as:
+      sub should_exist {
+        my @args = @_;
+        my $path = path($args[0]);
+        if ( not $path->exists() ) {
+          warn "$path does not exist";
+        }
+        return $path;
+      }
+      my $rval = $thing->should_exist("./foo.pm");
+      # Except of course more composable.
+
+  "test"
+    Default implementation simply returns the result of the given test.
+
+      if ( $assertion->test( test_name => @args ) ) {
+
+      }
+
+  "log"
+    Default implementation 'carp's the message and status given by
+    "test_name", and returns $args[0]
+
+      $assertion->log( test_name => @args );
+
+  "should"
+    Default implementation carps if "test_name" returns "false" with the
+    message provided by "test_name". It then returns $args[0]
+
+      $assertion->should( test_name => @args );
+
+  "should_not"
+    Default implementation carps if "test_name" returns "true" with the
+    message provided by "test_name". It then returns $args[0]
+
+      $assertion->should_not( test_name => @args );
+
+  "must"
+    Default implementation croaks if "test_name" returns "false" with the
+    message provided by "test_name".
+
+      $assertion->must( test_name => @args );
+
+  "must_not"
+    Default implementation croaks if "test_name" returns "true" with the
+    message provided by "test_name".
+
+      $assertion->must_not( test_name => @args );
+
+THANKS
+    To David Golden/xdg for oversight on some of the design concerns on this
+    module.
+
+    It would be for sure much uglier than it presently is without his help
+    :)
+
+AUTHOR
+    Kent Fredric <kentnl@cpan.org>
+
+COPYRIGHT AND LICENSE
+    This software is copyright (c) 2014 by Kent Fredric
+    <kentfredric@gmail.com>.
+
+    This is free software; you can redistribute it and/or modify it under
+    the same terms as the Perl 5 programming language system itself.
+
