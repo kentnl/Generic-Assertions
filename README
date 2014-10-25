@@ -5,11 +5,11 @@ VERSION
     version 0.001000
 
 ALPHA
-    This is prerelease code, and as such "API" is very much subject to
+    This is pre-release code, and as such "API" is very much subject to
     change.
 
     Best attempts at being consolidated is already made, but there's no
-    guarantees at this time things won't change and break API without
+    guarantees at this time things won't change and break "API" without
     warning.
 
 SYNOPSIS
