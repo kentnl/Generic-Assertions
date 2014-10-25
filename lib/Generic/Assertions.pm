@@ -121,7 +121,6 @@ sub _input_transformer_default {
   return sub { shift; return @_ };
 }
 
-
 # Dispatch the result of test name $test_name
 sub _handle {    ## no critic (Subroutines::ProhibitManyArgs)
   my ( $self, $handler_name, $status_code, $message, $test_name, @slurpy ) = @_;
@@ -324,6 +323,43 @@ But it would be probably nicer for you to sub-class C<Generic::Assertions> and m
 it available as a native method:
 
   ->$handler_name( $test_name, @slurpy_args )
+
+=head3 C<-input_transformer>
+
+You can specify a coderef through which all tests get passed as a primary step.
+
+  ->new(
+    -input_transformer => sub {
+      # Gets both the name, and all the tests arguments
+      my ( $name, $path )  = @_;
+      # Returns a substitute argument list
+      return path( $path );
+    },
+    exist => sub {
+      return ( 0, "$_[0] does not exist" ) unless $_[0]->exists;
+      return ( 1, "$_[1] exists" );
+    },
+  );
+
+  ...
+  # The following code will now check that foo.pm exist
+  # and if it exists, return a path() object for it as $rval.
+  # If foo.pm does not exist, it will warn.
+  #
+  # $rval will be a path object in both cases.
+  my $rval = $ass->should( exist => "./foo.pm" );
+
+  # Under default configuration, this is basically the same as:
+  sub should_exist {
+    my @args = @_;
+    my $path = path($args[0]);
+    if ( not $path->exists() ) {
+      warn "$path does not exist";
+    }
+    return $path;
+  }
+  my $rval = $thing->should_exist("./foo.pm");
+  # Except of course more composable.
 
 =head2 C<test>
 
