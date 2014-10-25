@@ -147,7 +147,7 @@ METHODS
       ->$handler_name( $test_name, @slurpy_args )
 
    "-input_transformer"
-    You can specify a CodeRef through which all tests get passed as a
+    You can specify a "CodeRef" through which all tests get passed as a
     primary step.
 
       ->new(
