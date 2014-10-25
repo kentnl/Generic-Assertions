@@ -117,6 +117,17 @@
       }
    },
    "release_status" : "stable",
+   "resources" : {
+      "bugtracker" : {
+         "web" : "https://github.com/kentnl/Generic-Assertions/issues"
+      },
+      "homepage" : "https://github.com/kentnl/Generic-Assertions",
+      "repository" : {
+         "type" : "git",
+         "url" : "https://github.com/kentnl/Generic-Assertions.git",
+         "web" : "https://github.com/kentnl/Generic-Assertions"
+      }
+   },
    "version" : "0.001000",
    "x_BuiltWith" : {
       "modules" : {

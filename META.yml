@@ -26,6 +26,10 @@ requires:
   perl: '5.006'
   strict: '0'
   warnings: '0'
+resources:
+  bugtracker: https://github.com/kentnl/Generic-Assertions/issues
+  homepage: https://github.com/kentnl/Generic-Assertions
+  repository: https://github.com/kentnl/Generic-Assertions.git
 version: '0.001000'
 x_BuiltWith:
   modules:

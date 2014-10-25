@@ -4,6 +4,14 @@ NAME
 VERSION
     version 0.001000
 
+ALPHA
+    This is pre-release code, and as such API is very much subject to
+    change.
+
+    Best attempts at being consolidated is already made, but there's no
+    guarantees at this time things won't change and break API without
+    warning.
+
 SYNOPSIS
       use Generic::Assertions;
       use Path::Tiny qw(path);
@@ -219,6 +227,13 @@ METHODS
     message provided by "test_name".
 
       $assertion->must_not( test_name => @args );
+
+THANKS
+    To David Golden/xdg for oversight on some of the design concerns on this
+    module.
+
+    It would be for sure much uglier than it presently is without his help
+    :)
 
 AUTHOR
     Kent Fredric <kentnl@cpan.org>

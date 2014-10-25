@@ -175,6 +175,13 @@ Generic::Assertions - A Generic Assertion checking class
 
 version 0.001000
 
+=head1 ALPHA
+
+This is pre-release code, and as such API is very much subject to change.
+
+Best attempts at being consolidated is already made, but there's no guarantees at this time
+things won't change and break API without warning.
+
 =head1 SYNOPSIS
 
   use Generic::Assertions;
@@ -402,6 +409,12 @@ Default implementation croaks if C<test_name> returns C<true> with the message p
   $assertion->must_not( test_name => @args );
 
 =for Pod::Coverage BUILD
+
+=head1 THANKS
+
+To David Golden/xdg for oversight on some of the design concerns on this module.
+
+It would be for sure much uglier than it presently is without his help :)
 
 =head1 AUTHOR
 
