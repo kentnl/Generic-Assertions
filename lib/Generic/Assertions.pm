@@ -161,6 +161,27 @@ for my $handler (qw( should must should_not must_not test log )) {
 
 1;
 
+=begin :prelude
+
+=head1 ALPHA
+
+This is pre-release code, and as such C<API> is very much subject to change.
+
+Best attempts at being consolidated is already made, but there's no guarantees at this time
+things won't change and break C<API> without warning.
+
+=end :prelude
+
+=begin :postlude
+
+=head1 THANKS
+
+To David Golden/xdg for oversight on some of the design concerns on this module.
+
+It would be for sure much uglier than it presently is without his help :)
+
+=end :postlude
+
 =head1 SYNOPSIS
 
   use Generic::Assertions;
