@@ -156,7 +156,7 @@ version 0.001000
   use Generic::Assertions;
   use Path::Tiny qw(path);
 
-  my $assert = Generic::Assertions->new( 
+  my $assert = Generic::Assertions->new(
     exist => sub {
       return (1, "Path $_[0] exists") if path($_[0])->exists;
       return (0, "Path $_[0] does not exist");
@@ -183,7 +183,7 @@ version 0.001000
 
     }
 
-    # carp unconditionally showing the test result and its message 
+    # carp unconditionally showing the test result and its message
     $assert->log( exist => $path );
   }
 
