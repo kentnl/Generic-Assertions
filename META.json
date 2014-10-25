@@ -16,7 +16,7 @@
    "prereqs" : {
       "configure" : {
          "recommends" : {
-            "ExtUtils::MakeMaker" : "6.98"
+            "ExtUtils::MakeMaker" : "7.00"
          },
          "requires" : {
             "ExtUtils::MakeMaker" : "0"
@@ -98,7 +98,7 @@
       "test" : {
          "recommends" : {
             "CPAN::Meta" : "2.120900",
-            "ExtUtils::MakeMaker" : "6.98",
+            "ExtUtils::MakeMaker" : "7.00",
             "Test::More" : "1.001008"
          },
          "requires" : {
@@ -130,7 +130,7 @@
          "Dist::Zilla::Plugin::BumpVersionAfterRelease" : "0.004",
          "Dist::Zilla::Plugin::ConfirmRelease" : "5.021",
          "Dist::Zilla::Plugin::CopyFilesFromBuild" : "0.103510",
-         "Dist::Zilla::Plugin::EOLTests" : "0.13",
+         "Dist::Zilla::Plugin::EOLTests" : "0.14",
          "Dist::Zilla::Plugin::Git::Check" : "2.025",
          "Dist::Zilla::Plugin::Git::Commit" : "2.025",
          "Dist::Zilla::Plugin::Git::CommitBuild" : "2.025",
@@ -170,7 +170,7 @@
          "Dist::Zilla::Plugin::Twitter" : "0.026",
          "Dist::Zilla::Plugin::UploadToCPAN" : "5.021",
          "Dist::Zilla::PluginBundle::Author::KENTNL" : "2.021000",
-         "ExtUtils::MakeMaker" : "6.98",
+         "ExtUtils::MakeMaker" : "7.00",
          "File::Spec" : "3.49",
          "Pod::Coverage::TrustPod" : "0.100003",
          "Test::CPAN::Changes" : "0.30",
@@ -360,8 +360,13 @@
          },
          {
             "class" : "Dist::Zilla::Plugin::EOLTests",
+            "config" : {
+               "Dist::Zilla::Plugin::Test::EOL" : {
+                  "filename" : "xt/release/eol.t"
+               }
+            },
             "name" : "@Author::KENTNL/EOLTests",
-            "version" : "0.13"
+            "version" : "0.14"
          },
          {
             "class" : "Dist::Zilla::Plugin::Test::MinimumVersion",
