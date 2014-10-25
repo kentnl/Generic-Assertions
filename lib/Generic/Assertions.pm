@@ -290,6 +290,20 @@ Would return C<foo>'s message instead of its return value.
 
 Use this power with care.
 
+=head4 Custom Handlers
+
+You can of course define custom handlers outside the core functionality,
+except of course they won't be accessible as convenient methods.
+
+You can perhaps invoke them via
+
+  ->_assert( $handler_name, $test_name, @slurpy_args )
+
+But it would be probably nicer for you to sub-class C<Generic::Assertions> and make
+it available as a native method:
+
+  ->$handler_name( $test_name, @slurpy_args )
+
 =head2 C<test>
 
 Default implementation simply returns the result of the given test.

@@ -133,6 +133,19 @@ METHODS
 
     Use this power with care.
 
+   Custom Handlers
+    You can of course define custom handlers outside the core functionality,
+    except of course they won't be accessible as convenient methods.
+
+    You can perhaps invoke them via
+
+      ->_assert( $handler_name, $test_name, @slurpy_args )
+
+    But it would be probably nicer for you to sub-class
+    "Generic::Assertions" and make it available as a native method:
+
+      ->$handler_name( $test_name, @slurpy_args )
+
   "test"
     Default implementation simply returns the result of the given test.
 
