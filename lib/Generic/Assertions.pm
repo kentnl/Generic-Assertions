@@ -43,6 +43,7 @@ sub BUILD {
   for my $handler ( keys %{$handlers} ) {
     croak 'handler ' . $handler . ' must be a CodeRef' if not 'CODE' eq ref $handlers->{$handler};
   }
+  croak 'input_transformer must be a CodeRef' if not 'CODE' eq ref $self->_input_transformer;
   return;
 }
 
@@ -102,6 +103,24 @@ sub _handler_defaults {
   };
 }
 
+sub _transform_input {
+  my ( $self, $name, @slurpy ) = @_;
+  return $self->_input_transformer->( $name, @slurpy );
+}
+
+sub _input_transformer {
+  my ( $self, ) = @_;
+  return $self->{input_transformer} if exists $self->{input_transformer};
+  if ( exists $self->_args->{'-input_transformer'} ) {
+    return ( $self->{input_transformer} = $self->_args->{'-input_transformer'} );
+  }
+  return ( $self->{input_transformer} = $self->_input_transformer_default );
+}
+
+sub _input_transformer_default {
+  return sub { shift; return @_ };
+}
+
 # Dispatch the result of test name $test_name
 sub _handle {    ## no critic (Subroutines::ProhibitManyArgs)
   my ( $self, $handler_name, $status_code, $message, $test_name, @slurpy ) = @_;
@@ -123,8 +142,9 @@ sub _test {
 # ->should( exist => path('./foo'))
 sub _assert {
   my ( $self, $handler_name, $test_name, @slurpy ) = @_;
-  my ( $status, $message ) = $self->_test( $test_name, @slurpy );
-  return $self->_handle( $handler_name, $status, $message, $test_name, @slurpy );
+  my (@input) = $self->_transform_input( $test_name, @slurpy );
+  my ( $status, $message ) = $self->_test( $test_name, @input );
+  return $self->_handle( $handler_name, $status, $message, $test_name, @input );
 }
 
 for my $handler (qw( should must should_not must_not test log )) {
@@ -287,6 +307,43 @@ But it would be probably nicer for you to sub-class C<Generic::Assertions> and m
 it available as a native method:
 
   ->$handler_name( $test_name, @slurpy_args )
+
+=head3 C<-input_transformer>
+
+You can specify a C<CodeRef> through which all tests get passed as a primary step.
+
+  ->new(
+    -input_transformer => sub {
+      # Gets both the name, and all the tests arguments
+      my ( $name, $path )  = @_;
+      # Returns a substitute argument list
+      return path( $path );
+    },
+    exist => sub {
+      return ( 0, "$_[0] does not exist" ) unless $_[0]->exists;
+      return ( 1, "$_[1] exists" );
+    },
+  );
+
+  ...
+  # The following code will now check that foo.pm exist
+  # and if it exists, return a path() object for it as $rval.
+  # If foo.pm does not exist, it will warn.
+  #
+  # $rval will be a path object in both cases.
+  my $rval = $ass->should( exist => "./foo.pm" );
+
+  # Under default configuration, this is basically the same as:
+  sub should_exist {
+    my @args = @_;
+    my $path = path($args[0]);
+    if ( not $path->exists() ) {
+      warn "$path does not exist";
+    }
+    return $path;
+  }
+  my $rval = $thing->should_exist("./foo.pm");
+  # Except of course more composable.
 
 =method C<test>
 
