@@ -4,7 +4,7 @@ Generic::Assertions - A Generic Assertion checking class
 
 # VERSION
 
-version 0.001000
+version 0.001001
 
 # ALPHA
 
