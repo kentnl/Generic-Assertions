@@ -34,7 +34,6 @@
             "Dist::Zilla::Plugin::BumpVersionAfterRelease" : "0",
             "Dist::Zilla::Plugin::ConfirmRelease" : "0",
             "Dist::Zilla::Plugin::CopyFilesFromBuild" : "0",
-            "Dist::Zilla::Plugin::EOLTests" : "0",
             "Dist::Zilla::Plugin::Git::Check" : "0",
             "Dist::Zilla::Plugin::Git::Commit" : "0",
             "Dist::Zilla::Plugin::Git::CommitBuild" : "0",
@@ -66,6 +65,7 @@
             "Dist::Zilla::Plugin::RunExtraTests" : "0",
             "Dist::Zilla::Plugin::Test::CPAN::Changes" : "0",
             "Dist::Zilla::Plugin::Test::Compile::PerFile" : "0",
+            "Dist::Zilla::Plugin::Test::EOL" : "0",
             "Dist::Zilla::Plugin::Test::Kwalitee" : "0",
             "Dist::Zilla::Plugin::Test::MinimumVersion" : "0",
             "Dist::Zilla::Plugin::Test::Perl::Critic" : "0",
@@ -84,7 +84,7 @@
          },
          "suggests" : {
             "Dist::Zilla::App::Command::bakeini" : "0.001003",
-            "Dist::Zilla::PluginBundle::Author::KENTNL" : "2.021000"
+            "Dist::Zilla::PluginBundle::Author::KENTNL" : "2.022000"
          }
       },
       "runtime" : {
@@ -130,7 +130,6 @@
          "Dist::Zilla::Plugin::BumpVersionAfterRelease" : "0.004",
          "Dist::Zilla::Plugin::ConfirmRelease" : "5.021",
          "Dist::Zilla::Plugin::CopyFilesFromBuild" : "0.103510",
-         "Dist::Zilla::Plugin::EOLTests" : "0.14",
          "Dist::Zilla::Plugin::Git::Check" : "2.025",
          "Dist::Zilla::Plugin::Git::Commit" : "2.025",
          "Dist::Zilla::Plugin::Git::CommitBuild" : "2.025",
@@ -162,6 +161,7 @@
          "Dist::Zilla::Plugin::RunExtraTests" : "0.022",
          "Dist::Zilla::Plugin::Test::CPAN::Changes" : "0.008",
          "Dist::Zilla::Plugin::Test::Compile::PerFile" : "0.003000",
+         "Dist::Zilla::Plugin::Test::EOL" : "0.14",
          "Dist::Zilla::Plugin::Test::Kwalitee" : "2.11",
          "Dist::Zilla::Plugin::Test::MinimumVersion" : "2.000005",
          "Dist::Zilla::Plugin::Test::Perl::Critic" : "2.112410",
@@ -169,7 +169,7 @@
          "Dist::Zilla::Plugin::TestRelease" : "5.021",
          "Dist::Zilla::Plugin::Twitter" : "0.026",
          "Dist::Zilla::Plugin::UploadToCPAN" : "5.021",
-         "Dist::Zilla::PluginBundle::Author::KENTNL" : "2.021000",
+         "Dist::Zilla::PluginBundle::Author::KENTNL" : "2.022000",
          "ExtUtils::MakeMaker" : "7.00",
          "File::Spec" : "3.49",
          "Pod::Coverage::TrustPod" : "0.100003",
@@ -359,13 +359,13 @@
             "version" : "2.11"
          },
          {
-            "class" : "Dist::Zilla::Plugin::EOLTests",
+            "class" : "Dist::Zilla::Plugin::Test::EOL",
             "config" : {
                "Dist::Zilla::Plugin::Test::EOL" : {
-                  "filename" : "xt/release/eol.t"
+                  "filename" : "xt/author/eol.t"
                }
             },
-            "name" : "@Author::KENTNL/EOLTests",
+            "name" : "@Author::KENTNL/Test::EOL",
             "version" : "0.14"
          },
          {

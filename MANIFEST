@@ -31,9 +31,9 @@ t/core_handlers_methods.t
 t/input_transformer.t
 weaver.ini
 xt/author/critic.t
+xt/author/eol.t
 xt/release/cpan-changes.t
 xt/release/distmeta.t
-xt/release/eol.t
 xt/release/kwalitee.t
 xt/release/minimum-version.t
 xt/release/pod-coverage.t
