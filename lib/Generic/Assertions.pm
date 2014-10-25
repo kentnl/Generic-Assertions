@@ -52,7 +52,7 @@ sub _tests {
   my ( $self, ) = @_;
   return $self->{tests} if exists $self->{tests};
   my %tests;
-  for my $key ( grep { !/^-/ } keys %{ $self->_args } ) {
+  for my $key ( grep { !/\A-/msx } keys %{ $self->_args } ) {
     $tests{$key} = $self->_args->{$key};
   }
   return ( $self->{tests} = { %tests, %{ $self->_args->{'-tests'} || {} } } );
@@ -99,7 +99,7 @@ sub _handler_defaults {
 }
 
 # Dispatch the result of test name $test_name
-sub _handle {
+sub _handle { ## no critic (Subroutines::ProhibitManyArgs)
   my ( $self, $handler_name, $status_code, $message, $test_name, @slurpy ) = @_;
   return $self->_handlers->{$handler_name}->( $status_code, $message, $test_name, @slurpy );
 }
