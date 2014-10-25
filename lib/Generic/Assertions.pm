@@ -187,6 +187,48 @@ version 0.001000
     $assert->log( exist => $path );
   }
 
+=head1 METHODS
+
+=head2 C<test>
+
+Default implementation simply returns the result of the given test.
+
+  if ( $assertion->test( test_name => @args ) ) {
+
+  }
+
+=head2 C<log>
+
+Default implementation 'carp's the message and status given by C<test_name>, and returns C<$args[0]>
+
+  $assertion->log( test_name => @args );
+
+=head2 C<should>
+
+Default implementation carps if C<test_name> returns C<false> with the message provided by C<test_name>.
+It then returns C<$args[0]>
+
+  $assertion->should( test_name => @args );
+
+=head2 C<should_not>
+
+Default implementation carps if C<test_name> returns C<true> with the message provided by C<test_name>.
+It then returns C<$args[0]>
+
+  $assertion->should_not( test_name => @args );
+
+=head2 C<must>
+
+Default implementation croaks if C<test_name> returns C<false> with the message provided by C<test_name>.
+
+  $assertion->must( test_name => @args );
+
+=head2 C<must_not>
+
+Default implementation croaks if C<test_name> returns C<true> with the message provided by C<test_name>.
+
+  $assertion->must_not( test_name => @args );
+
 =head1 AUTHOR
 
 Kent Fredric <kentnl@cpan.org>

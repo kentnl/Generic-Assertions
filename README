@@ -39,6 +39,44 @@ SYNOPSIS
         $assert->log( exist => $path );
       }
 
+METHODS
+  "test"
+    Default implementation simply returns the result of the given test.
+
+      if ( $assertion->test( test_name => @args ) ) {
+
+      }
+
+  "log"
+    Default implementation 'carp's the message and status given by
+    "test_name", and returns $args[0]
+
+      $assertion->log( test_name => @args );
+
+  "should"
+    Default implementation carps if "test_name" returns "false" with the
+    message provided by "test_name". It then returns $args[0]
+
+      $assertion->should( test_name => @args );
+
+  "should_not"
+    Default implementation carps if "test_name" returns "true" with the
+    message provided by "test_name". It then returns $args[0]
+
+      $assertion->should_not( test_name => @args );
+
+  "must"
+    Default implementation croaks if "test_name" returns "false" with the
+    message provided by "test_name".
+
+      $assertion->must( test_name => @args );
+
+  "must_not"
+    Default implementation croaks if "test_name" returns "true" with the
+    message provided by "test_name".
+
+      $assertion->must_not( test_name => @args );
+
 AUTHOR
     Kent Fredric <kentnl@cpan.org>
 
