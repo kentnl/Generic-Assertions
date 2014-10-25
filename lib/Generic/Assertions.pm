@@ -177,7 +177,7 @@ version 0.001000
 
 =head1 ALPHA
 
-This is pre-release code, and as such API is very much subject to change.
+This is prerelease code, and as such C<API> is very much subject to change.
 
 Best attempts at being consolidated is already made, but there's no guarantees at this time
 things won't change and break API without warning.
