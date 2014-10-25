@@ -29,6 +29,10 @@ sub new {
   return $self;
 }
 
+
+
+
+
 sub BUILD {
   my ($self) = @_;
   my $tests = $self->_tests;
@@ -189,6 +193,103 @@ version 0.001000
 
 =head1 METHODS
 
+=head2 C<new>
+
+Constructs a Generic::Assertions object.
+
+  my $assertion = Generic::Assertions->new( ARGS );
+
+The following forms of C<ARGS> is supporteed:
+
+  ->new(   key => value    );
+  ->new({  key => value   });
+
+All C<keys> without a C<-> prefix are assumed to be test names, and are equivalent to:
+
+  ->new( -tests => { key => value } );
+
+=head3 C<-tests>
+
+All tests must have a simple string key, and a C<CodeRef> value.
+
+An example test looks like:
+
+   sub {
+      my ( @slurpy ) = @_;
+      if ( -e $slurpy[0] ) {
+        return ( 1, "$slurpy[0] exists" );
+      }
+      return ( 0, "$slurpy[1] does not exist" );
+   }
+
+That is, each test must return either a C<true> value or a C<false> value.
+And each test must return a string describing the condition.
+
+This is so it composes nicely:
+
+  $ass->should( exist => $foo ); # warns "$foo does not exist" if it doesn't
+  $ass->should_not( exist => $foo ); # warns "$foo exists" if it does.
+
+Note the test itself can only see the arguments passed directly to it at the calling point.
+
+=head3 C<-handlers>
+
+Each of the various assertion types have a handler underlying them, which can be overridden
+during construction.
+
+  ->new( -handlers => { should => sub { ... } } ); 
+
+This for instance will override the default handler for "should" and will be invoked
+somewhere after the result from
+
+  $assertion->should(  )
+
+Is obtained.
+
+An example handler approximating the default C<should> handler.
+
+  sub {
+    my ( $status, $message, $name, @slurpy ) = @_;
+    # $status is the 0/1 returned by the test.
+    # $message is the message the test gave.
+    # $name is the name of the test invoked ( ie: ->should( foo => ... )
+    # @slurpy is the arguments passed from the user to the test.
+    carp $message if $status;
+    return $slurpy[0];
+  }
+
+Its worth noting that handlers dictate in entirety:
+
+=over 4
+
+=item * What calls will be invoked in response to the fail/pass returned by the test
+
+=item * What will be returned to the caller who invoked the test
+
+=back
+
+For instance, the C<test> handler is simply:
+
+  sub { 
+    my ( $status ) = @_;
+    return $status;
+  }
+
+And you could perhaps change that to 
+
+  sub { 
+    my ( $status, $message ) = @_;
+    return $message;
+  }
+
+And then invoking 
+
+  ->test( foo => @args );
+
+Would return C<foo>'s message instead of its return value.
+
+Use this power with care.
+
 =head2 C<test>
 
 Default implementation simply returns the result of the given test.
@@ -228,6 +329,8 @@ Default implementation croaks if C<test_name> returns C<false> with the message 
 Default implementation croaks if C<test_name> returns C<true> with the message provided by C<test_name>.
 
   $assertion->must_not( test_name => @args );
+
+=for Pod::Coverage BUILD
 
 =head1 AUTHOR
 
