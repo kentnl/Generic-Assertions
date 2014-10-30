@@ -4,7 +4,7 @@ use warnings;
 
 package Generic::Assertions;
 
-our $VERSION = '0.001001'; # TRIAL
+our $VERSION = '0.001002';
 
 # ABSTRACT: A Generic Assertion checking class
 
