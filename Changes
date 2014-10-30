@@ -1,5 +1,13 @@
 Release history for Generic-Assertions
 
+0.001001 2014-10-30T09:12:56Z 93284f4
+ - Non-Trial release of previous version.
+
+ [Dependencies::Stats]
+ - Dependencies changed since 0.001000, see misc/*.deps* for details
+ - configure: +1
+ - test: +1
+
 0.001000 2014-10-25T10:32:43Z c2ef458
  - First version.
 
