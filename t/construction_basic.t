@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-use Test::More;
+use Test::More tests => 5;
 use Test::Warnings qw( warning );
 use Test::Fatal qw( exception );
 
@@ -39,6 +39,3 @@ eok_like( exception { my $ass = Generic::Assertions->new('foo') }, qr/even/, 'Od
 
 eok_like( exception { my $ass = Generic::Assertions->new( x => 'y' ) }, qr/must be a CodeRef/, 'two args badder' );
 eok_like( exception { my $ass = Generic::Assertions->new( 'foo', 'foo', 'foo' ) }, qr/even/, 'Three args bad' );
-
-done_testing;
-
