@@ -22,7 +22,7 @@ name: Generic-Assertions
 provides:
   Generic::Assertions:
     file: lib/Generic/Assertions.pm
-    version: '0.001002'
+    version: '0.001003'
 requires:
   Carp: '0'
   perl: '5.006'
@@ -32,4 +32,4 @@ resources:
   bugtracker: https://github.com/kentnl/Generic-Assertions/issues
   homepage: https://github.com/kentnl/Generic-Assertions
   repository: https://github.com/kentnl/Generic-Assertions.git
-version: '0.001002'
+version: '0.001003'

@@ -4,7 +4,7 @@ use warnings;
 
 package Generic::Assertions;
 
-our $VERSION = '0.001002';
+our $VERSION = '0.001003';
 
 # ABSTRACT: A Generic Assertion checking class
 
@@ -173,7 +173,7 @@ Generic::Assertions - A Generic Assertion checking class
 
 =head1 VERSION
 
-version 0.001002
+version 0.001003
 
 =head1 ALPHA
 

@@ -1,5 +1,7 @@
 Release history for Generic-Assertions
 
+0.001003 2017-03-03T16:40:00Z 14097a9
+
 0.001002 2017-03-03T16:20:07Z 3a245dd
  [Bugfix]
  - Avoid test failures on 5.26 w/ -Ddefault_inc_excludes_dot
