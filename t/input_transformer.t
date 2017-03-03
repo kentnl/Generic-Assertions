@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-use Test::More;
+use Test::More tests => 33;
 use Test::Warnings qw( warning );
 use Test::Fatal qw( exception );
 
@@ -77,24 +77,24 @@ sub warnok_like($$$) {
 
 sub noe_subtest($$) {
   my ( $name, $code ) = @_;
-  subtest $name => sub {
-    my $exception = exception { $code->() };
-    noe_ok( $exception, 'No exceptions from subtest' );
-  };
+  note "Beginning Subtest: $name ]---";
+  my $exception = exception { $code->() };
+  note "Ending Subtest: $name ]---";
+  noe_ok( $exception, 'No exceptions from subtest' );
 }
 
 sub nowe_subtest($$) {
   my ( $name, $code ) = @_;
-  subtest $name => sub {
-    my $warning;
-    my $exception = exception {
-      $warning = warning {
-        $code->();
-      };
+  note "Beginning Subtest: $name ]---";
+  my $warning;
+  my $exception = exception {
+    $warning = warning {
+      $code->();
     };
-    noe_ok( $exception, 'No exceptions from subtest ' . $name );
-    now_ok( $warning, 'No warnings from subtest ' . $name );
   };
+  note "Ending Subtest: $name ]---";
+  noe_ok( $exception, 'No exceptions from subtest ' . $name );
+  now_ok( $warning, 'No warnings from subtest ' . $name );
 }
 
 {
@@ -186,7 +186,8 @@ noe_subtest 'handler.should_not.true' => sub {
   warnok_like( $warning, qr/Assertion < should_not passfail > failed: Test handle is true/, "Expected warning returned" );
 };
 
-subtest 'handler.must.false' => sub {
+{
+  note "Beginning Subtest: handler.must.false ]---";
   my $ass = mk_ass;
   my $return;
   my $ex = exception { $return = $ass->must( passfail => 0 ) };
@@ -194,7 +195,9 @@ subtest 'handler.must.false' => sub {
   ok( ( not defined $return ), 'test handler does not return' );
 
   eok_like( $ex, qr/Assertion < must passfail > failed: Test handle is false/, "Expected exception returned" );
-};
+  note "Ending Subtest: handler.must.false ]---";
+}
+
 nowe_subtest 'handler.must.true' => sub {
 
   my $ass = mk_ass;
@@ -211,8 +214,8 @@ nowe_subtest 'handler.must_not.false' => sub {
 
 };
 
-subtest 'handler.must.true' => sub {
-
+{
+  note "Beginning Subtest: handler.must.true ]---";
   my $ass = mk_ass;
 
   my $return;
@@ -221,8 +224,5 @@ subtest 'handler.must.true' => sub {
   ok( ( not defined $return ), 'test handler does not return' );
 
   eok_like( $ex, qr/Assertion < must_not passfail > failed: Test handle is true/, "Expected exception returned" );
-
+  note "Ending Subtest: handler.must.true ]---";
 };
-
-done_testing;
-

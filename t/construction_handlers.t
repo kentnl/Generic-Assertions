@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-use Test::More;
+use Test::More tests => 5;
 use Test::Warnings qw( warning );
 use Test::Fatal qw( exception );
 
@@ -69,5 +69,3 @@ noe_ok(
   },
   'sub is good in a hash handler set when constructed as hashes'
 );
-done_testing;
-
