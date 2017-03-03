@@ -4,7 +4,7 @@ use warnings;
 
 package Generic::Assertions;
 
-our $VERSION = '0.001001';
+our $VERSION = '0.001002';
 
 # ABSTRACT: A Generic Assertion checking class
 
@@ -173,7 +173,7 @@ Generic::Assertions - A Generic Assertion checking class
 
 =head1 VERSION
 
-version 0.001001
+version 0.001002
 
 =head1 ALPHA
 
@@ -217,6 +217,27 @@ things won't change and break C<API> without warning.
     # carp unconditionally showing the test result and its message
     $assert->log( exist => $path );
   }
+
+=head1 DESCRIPTION
+
+C<Generic::Assertions> allows you to create portable containers of classes of assertions, and allows keeping
+severity of assertions from their implementation.
+
+Basic implementation entails
+
+=over 4
+
+=item * Defining a list of things to test for
+
+=item * Returning a pair of ( OK / NOT_OK , "reason" ) for the tests conclusion
+
+=item * [optional] Defining a default handler for various classes of severity ( C<should>, C<must> etc. )
+
+=item * [optional] Defining an input transform (eg: always converting the first argument to a path)
+
+=item * Invoking the assertion at the callpoint as C<< $instance->severity_level( test_name => @args_for_test ) >>
+
+=back
 
 =head1 METHODS
 
@@ -422,7 +443,7 @@ Kent Fredric <kentnl@cpan.org>
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2014 by Kent Fredric <kentfredric@gmail.com>.
+This software is copyright (c) 2017 by Kent Fredric <kentfredric@gmail.com>.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
