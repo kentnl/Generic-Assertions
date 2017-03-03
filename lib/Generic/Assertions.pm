@@ -218,6 +218,27 @@ things won't change and break C<API> without warning.
     $assert->log( exist => $path );
   }
 
+=head1 DESCRIPTION
+
+C<Generic::Assertions> allows you to create portable containers of classes of assertions, and allows keeping
+severity of assertions from their implementation.
+
+Basic implementation entails
+
+=over 4
+
+=item * Defining a list of things to test for
+
+=item * Returning a pair of ( OK / NOT_OK , "reason" ) for the tests conclusion
+
+=item * [optional] Defining a default handler for various classes of severity ( C<should>, C<must> etc. )
+
+=item * [optional] Defining an input transform (eg: always converting the first argument to a path)
+
+=item * Invoking the assertion at the callpoint as C<< $instance->severity_level( test_name => @args_for_test ) >>
+
+=back
+
 =head1 METHODS
 
 =head2 C<new>

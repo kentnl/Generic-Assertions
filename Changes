@@ -1,6 +1,6 @@
 Release history for Generic-Assertions
 
-0.001002 2017-03-03T14:47:25Z 22992c9
+0.001002 2017-03-03T15:06:42Z 1d76e55
  [Bugfix]
  - Avoid test failures on 5.26 w/ -Ddefault_inc_excludes_dot
  - Closes https://github.com/kentnl/Generic-Assertions/issues/1
