@@ -49,6 +49,19 @@ things won't change and break `API` without warning.
       $assert->log( exist => $path );
     }
 
+# DESCRIPTION
+
+`Generic::Assertions` allows you to create portable containers of classes of assertions, and allows keeping
+severity of assertions from their implementation.
+
+Basic implementation entails
+
+- Defining a list of things to test for
+- Returning a pair of ( OK / NOT\_OK , "reason" ) for the tests conclusion
+- \[optional\] Defining a default handler for various classes of severity ( `should`, `must` etc. )
+- \[optional\] Defining an input transform (eg: always converting the first argument to a path)
+- Invoking the assertion at the callpoint as `$instance->severity_level( test_name => @args_for_test )`
+
 # METHODS
 
 ## `new`
